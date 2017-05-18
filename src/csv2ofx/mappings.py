@@ -1,4 +1,4 @@
-
+# coding=UTF-8
 # mapping tells the next functions where to get the data for each row
 # each key in a mapping must return a function that takes
 # the current row and the SimpleCSVGrid object
@@ -263,11 +263,11 @@ creditcardbradesco = {
         'skip':lambda row,grid: False,
         'BANKID':lambda row,grid:'Bradesco',
         'ACCTID':lambda row,grid:'Cartao de Credito Bradesco',
-        'DTPOSTED':lambda row,grid: toOFXDateBR(fromCSVCol(row,grid,'Date')),
-        'TRNAMT':lambda row,grid: fromCSVCol(row,grid,'Amount'),
+        'DTPOSTED':lambda row,grid: toOFXDateBR(fromCSVCol(row,grid,'Data')),
+        'TRNAMT':lambda row,grid: fromCSVCol(row,grid,'R$'),
         'FITID':lambda row,grid: row,
         'PAYEE':lambda row,grid:'',
-        'MEMO':lambda row,grid: fromCSVCol(row,grid,'Payee'),
+        'MEMO':lambda row,grid: fromCSVCol(row,grid,'Histórico'),
         'CURDEF':lambda row,grid:'BRL',
         'CHECKNUM':lambda row,grid:''
     },
