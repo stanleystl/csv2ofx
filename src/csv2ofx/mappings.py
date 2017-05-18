@@ -98,6 +98,10 @@ def toOFXDate(date):
     yearlen=len(date.split('/')[-1])
     return datetime.strptime(date,yearlen==2 and '%m/%d/%y' or '%m/%d/%Y').strftime('%Y%m%d')
 
+def toOFXDateBR(date):
+    yearlen=len(date.split('/')[-1])
+    return datetime.strptime(date,yearlen==2 and '%d/%m/%y' or '%d/%m/%Y').strftime('%Y%m%d')    
+
 yodlee = {
 
     'OFX':{
@@ -233,11 +237,39 @@ msmoneyrep = {
         'ACCTID':lambda row,grid: fromCSVCol(row,grid,'Account Name').split(' - ')[-1],
         'DTPOSTED':lambda row,grid: toOFXDate(fromCSVCol(row,grid,'Date')),
         'TRNAMT':lambda row,grid: fromCSVCol(row,grid,'Amount'),
-        'FITID':lambda row,grid: fromCSVCol(row,grid,'Num'),
+        'FITID':lambda row,grid: row,
         'PAYEE':lambda row,grid: fromCSVCol(row,grid,'Payee'),
         'MEMO':lambda row,grid: msmoney_memo(row,grid),
         'CURDEF':lambda row,grid: fromCSVCol(row,grid,'Currency'),
-        'CHECKNUM':lambda row,grid: fromCSVCol(row,grid,'Num')
+        'CHECKNUM':''
+    },
+    'QIF':{
+        'split':lambda row,grid: fromCSVCol(row,grid,'Date') == '', #split should be determined by absence of date and other fields.
+        'Account':lambda row,grid: fromCSVCol(row,grid,'Account'),
+        'AccountDscr':lambda row,grid: fromCSVCol(row,grid,'Account'),
+        'Date':lambda row,grid: toOFXDate(fromCSVCol(row,grid,'Date')),
+        'Payee':lambda row,grid: parse_payee(row,grid),
+        'Memo':lambda row,grid: fromCSVCol(row,grid,'C') + ': ' + fromCSVCol(row,grid,'Memo'),
+        'Category':lambda row,grid: fromCSVCol(row,grid,'Category'),
+        'Class':lambda row,grid: fromCSVCol(row,grid,'Projects'),
+        'Amount':lambda row,grid: fromCSVCol(row,grid,'Amount'),
+        'Number':lambda row,grid: fromCSVCol(row,grid,'Num')
+    }
+}
+
+creditcardbradesco = {
+
+    'OFX':{
+        'skip':lambda row,grid: False,
+        'BANKID':lambda row,grid:'Bradesco',
+        'ACCTID':lambda row,grid:'Cartao de Credito Bradesco',
+        'DTPOSTED':lambda row,grid: toOFXDateBR(fromCSVCol(row,grid,'Date')),
+        'TRNAMT':lambda row,grid: fromCSVCol(row,grid,'Amount'),
+        'FITID':lambda row,grid: row,
+        'PAYEE':lambda row,grid:'',
+        'MEMO':lambda row,grid: fromCSVCol(row,grid,'Payee'),
+        'CURDEF':lambda row,grid:'BRL',
+        'CHECKNUM':lambda row,grid:''
     },
     'QIF':{
         'split':lambda row,grid: fromCSVCol(row,grid,'Date') == '', #split should be determined by absence of date and other fields.

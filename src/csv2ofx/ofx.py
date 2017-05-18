@@ -33,9 +33,18 @@ def export ( path, mapping, grid):
     # output
     
     out=open(path,'w')
-    
-    out.write (
-        """
+    content = []
+    content.append(
+        """OFXHEADER:100
+        DATA:OFXSGML
+        VERSION:102
+        SECURITY:NONE
+        ENCODING:USASCII
+        CHARSET:1252
+        COMPRESSION:NONE
+        OLDFILEUID:NONE
+        NEWFILEUID:NONE
+
         <OFX>
             <SIGNONMSGSRSV1>
                <SONRS>
@@ -56,7 +65,7 @@ def export ( path, mapping, grid):
     )
         
     for acct in accounts.values():
-        out.write(
+        content.append(
             """
             <STMTRS>
                 <CURDEF>%(CURDEF)s</CURDEF>
@@ -73,7 +82,7 @@ def export ( path, mapping, grid):
         )
         
         for tran in acct['trans']:
-            out.write (
+            content.append (
                 """
                         <STMTTRN>
                             <TRNTYPE>%(TRNTYPE)s</TRNTYPE>
@@ -84,24 +93,24 @@ def export ( path, mapping, grid):
                 """ % tran
             )
             if tran['CHECKNUM'] is not None and len(tran['CHECKNUM'])>0:
-                out.write(
+                content.append(
                 """
                             <CHECKNUM>%(CHECKNUM)s</CHECKNUM>
                 """ % tran
                 )
-            out.write(
+            content.append(
                 """
                             <NAME>%(PAYEE)s</NAME>
                             <MEMO>%(MEMO)s</MEMO>
                 """ % tran
             )
-            out.write(
+            content.append(
                 """
                         </STMTTRN>
                 """
             )
         
-        out.write (
+        content.append (
             """
                 </BANKTRANLIST>
                 <LEDGERBAL>
@@ -112,7 +121,10 @@ def export ( path, mapping, grid):
             """ % today
         )
         
-    out.write ( "</STMTTRNRS></BANKMSGSRSV1></OFX>" )
+    content.append ( "</STMTTRNRS></BANKMSGSRSV1></OFX>" )    
+    lines = ''.join(content).split('\n')
+    content = '\n'.join([ line.strip() for line in lines ])
+    out.write(content)
     out.close()
     print "Exported %s" % path
     
