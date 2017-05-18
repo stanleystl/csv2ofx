@@ -1,4 +1,3 @@
-
 import sys, os, time
 from traceback import print_exc
 
@@ -14,5 +13,5 @@ class csv2ofx():
 
         csv_path = sys.argv[1]
         grid = SimpleCSVGrid(csv_path,delimiter)
-        ofx.export(csv_path + ".ofx", mappings.creditcardbradesco['OFX'], grid)
+        ofx.export(os.path.splitext(csv_path)[0] + ".ofx", mappings.creditcardbradesco['OFX'], grid)
 

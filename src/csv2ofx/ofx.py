@@ -1,4 +1,3 @@
-
 from datetime import datetime
 import time
 
@@ -127,11 +126,3 @@ def export ( path, mapping, grid):
     out.write(content)
     out.close()
     print "Exported %s" % path
-    
-    
-    
-    
-
-    
-    
-    

@@ -1,18 +1,12 @@
 csv2ofx
 
-Installation:
+Running:
 
-To install the program in your site packages, you can use
-python to execute the install function:
+> python csv2ofx /path/to/csv
 
-> python setup.py install
+This will output the ofx file into the same folder of your csv file
 
 This should work on both Windows and Linux.
-
-Runtime dependencies:
-
-  wxPython.
-
 
 Custom Mappings:
 
@@ -26,6 +20,7 @@ to suite your needs.  See mappings.py for mapping documentation.
 Enjoy!
 
 Contributors
+Adauto Neto
 Dennis Muhlestein
 Dave (Davestechshop.net)
 Arthur Liu
