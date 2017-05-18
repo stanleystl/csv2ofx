@@ -94,13 +94,8 @@ def yodlee_memo(row,grid):
         return "%s - %s - %s" % ( memo, cat, cls)
     return "%s - %s" % ( cat, cls )
 
-def toOFXDate(date):
-    yearlen=len(date.split('/')[-1])
-    return datetime.strptime(date,yearlen==2 and '%m/%d/%y' or '%m/%d/%Y').strftime('%Y%m%d')
-
-def toOFXDateBR(date):
-    yearlen=len(date.split('/')[-1])
-    return datetime.strptime(date,yearlen==2 and '%d/%m/%y' or '%d/%m/%Y').strftime('%Y%m%d')    
+def toOFXDate(date, format='%d/%m/%y'):
+    return datetime.strptime(date,format).strftime('%Y%m%d')
 
 yodlee = {
 
@@ -263,7 +258,7 @@ creditcardbradesco = {
         'skip':lambda row,grid: False,
         'BANKID':lambda row,grid:'Bradesco',
         'ACCTID':lambda row,grid:'Cartao de Credito Bradesco',
-        'DTPOSTED':lambda row,grid: toOFXDateBR(fromCSVCol(row,grid,'Data')),
+        'DTPOSTED':lambda row,grid: toOFXDate(fromCSVCol(row,grid,'Data'), '%d/%m/%Y'),
         'TRNAMT':lambda row,grid: fromCSVCol(row,grid,'R$'),
         'FITID':lambda row,grid: row,
         'PAYEE':lambda row,grid:'',
