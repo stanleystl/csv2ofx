@@ -8,7 +8,7 @@ class SimpleCSVGrid():
     """
     def __init__(self,csv_path,delimiter=',',skip_last=0):        
           # delimiter, quote could come from config file perhaps
-        csv_reader = csv.reader(open(csv_path,'r'),delimiter=delimiter,quotechar='"')
+        csv_reader = csv.reader(open(csv_path,'rU'),delimiter=delimiter,quotechar='"')
         self.grid_contents = [row for row in csv_reader if len(row)>0]
         if skip_last:
             self.grid_contents=self.grid_contents[:-skip_last]
